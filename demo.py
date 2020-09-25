@@ -33,6 +33,21 @@ from utils.parse_config import parse_model_cfg
 import utils.datasets as datasets
 from track import eval_seq
 
+'''
+python demo.py --input-video MOT_video/MOT17-02-FRCNN_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format text --output-root output/
+
+python demo.py --input-video MOT_video/MOT17-04-FRCNN_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+
+python demo.py --input-video MOT_video/MOT17-09-FRCNN_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+
+python demo.py --input-video MOT_video/MOT20-01_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+
+python demo.py --input-video MOT_video/MOT20-02_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+
+python demo.py --input-video MOT_video/MOT20-03_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+
+python demo.py --input-video MOT_video/MOT20-05_video.avi --weights weights/jde.1088x608.uncertainty.pt --output-format video --output-root output/
+'''
 
 logger.setLevel(logging.INFO)
 
@@ -49,9 +64,14 @@ def track(opt):
     n_frame = 0
 
     logger.info('Starting tracking...')
+    print(opt.input_video)
     dataloader = datasets.LoadVideo(opt.input_video, opt.img_size)
-    result_filename = os.path.join(result_root, 'results.txt')
+    print(opt.img_size)
+    #dataloader = datasets.LoadImages(opt.input_video, opt.img_size)
+    file_name = opt.input_video.split('/')[-1].split('.')[0] + '.txt'
+    result_filename = os.path.join(result_root, file_name)
     frame_rate = dataloader.frame_rate 
+    #frame_rate = 30
 
     frame_dir = None if opt.output_format=='text' else osp.join(result_root, 'frame')
     try:
